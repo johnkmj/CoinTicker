@@ -33,6 +33,8 @@ function getCoinbasePrice() {
 mb.on('ready', function ready () {
   console.log('app is ready')
   // read http://electron.atom.io/docs/api/tray/
+  // example in the tip below!
+  // https://github.com/kevinsawicki/tray-example/blob/master/main.js
 })
 
 // prevent window being garbage collected

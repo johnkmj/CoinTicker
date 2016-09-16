@@ -2,6 +2,12 @@
 
 > A bitcoin ticker written in Electron.
 
+## Todolist/features
+
+Icon that changes from bull to bear depending on the market outlook.
+Icon that has a appended value that shows the realtime value of the bitcoin price.
+Alerts.
+
 
 ## Dev
 

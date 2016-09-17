@@ -4,7 +4,7 @@
 
 ## Todolist/features
 
-##Current features
+###Current features
 
 Shows the current bitcoin price in the menubar. Different sources can be selected by clicking the menu item.
 

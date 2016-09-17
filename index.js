@@ -1,59 +1,80 @@
 'use strict';
-const electron = require('electron');
-
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-var menubar = require('menubar');
-var Menu = require('menu');
-var MenuItem = require('menu-item');
-var dialog = require('dialog'); 
+var unirest = require('unirest')
 
-var mb = menubar({dir: __dirname, icon: 'not-castingTemplate.png'});
+const {app, Tray, Menu} = require('electron')
+const path = require('path')
+const assetsDirectory = path.join(__dirname, 'assets')
 
-var mb = menubar()
+var priceSource = Menu.buildFromTemplate([
+  {label: 'Coinbase', type: 'radio', checked: true},
+  {label: 'Bitfinex', type: 'radio'},
+  {label: 'Blockchain', type: 'radio'},
+  {label: 'Created by John Koh :)'}
+]);
 
-function getCoinbasePrice() {
-	// gets price from
-	// https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1
-	var req = new XMLHttpRequest();
-	var url = "https://api.exchange.coinbase.com/products/BTC-USD/trades?limit=1"
-  req.open( "GET", url, false );
-  req.addEventListener( "load",function() {
-  	if( req.status >= 200 && req.status < 403 ) {
-  		var response = JSON.parse( req.responseText );
-  		// finish this up
-  	}
+let tray = undefined;
 
-  	else {
-  		console.log( "Error: " + req.statusText );
-  	}
-  });
+app.dock.hide()
+
+app.on('ready', () => {
+  createTray();
+  updatePrice();
+});
+
+const createTray = () => {
+  console.log("Creating Tray Icon...")
+  tray = new Tray(path.join(assetsDirectory, 'bitcoinTemplate.png'));
+  tray.setTitle("Loading");
+  tray.setContextMenu(priceSource);
 }
 
-mb.on('ready', function ready () {
-  console.log('app is ready')
-  // read http://electron.atom.io/docs/api/tray/
-  // example in the tip below!
-  // https://github.com/kevinsawicki/tray-example/blob/master/main.js
-})
-
-// prevent window being garbage collected
-let mainWindow;
-
-function onClosed() {
-	// dereference the window
-	// for multiple windows store them in an array
-	mainWindow = null;
+// sets price in tray
+const setPrice = (url, parse_arr) => {
+  unirest.get(url)
+  .end(function(res) {
+    if (res.error) {
+      console.log('GET error', res.error)
+      tray.setTitle("Error")
+    } else {
+        var price = res.body;
+        for (var i=0; i < parse_arr.length; i++) {
+          price = price[parse_arr[i]]
+        }
+        tray.setTitle(price.toString());
+      }
+    })
 }
 
-function createAboutWindow() {
-	const win = new electron.BrowserWindow({
-		width: 400,
-		height: 400
-	});
 
-	win.loadURL(`file://${__dirname}/index.html`);
-	win.on('closed', onClosed);
+const updatePrice = () => {
+  // FIXME replace with your own API key
+  // Register for one at https://developer.forecast.io/register
+  // check which one is checked.
+  console.log("Updating price...")
 
-	return win;
+  var tickerSource;
+  for(var selected = 0; selected < 3; selected++) {
+    if (priceSource.items[selected].checked) {
+      tickerSource = priceSource.items[selected].label;
+      break;
+    }
+  }
+  console.log(`Getting bitcoin price from ${tickerSource}`)
+  var price = "$100";
+  switch(tickerSource) {
+    case "Coinbase":
+      setPrice("https://api.coinbase.com/v2/prices/spot?currency=USD", ["data", "amount"]);
+      break;
+    case "Bitfinex":
+      setPrice("https://api.bitfinex.com/v1/ticker/btcusd", ["last_price"])
+      break;
+    case "Blockchain":
+      setPrice("https://blockchain.info/ticker", ["USD", "last"])
+      break;
+  }
 }
+
+const tenSeconds = 10 * 1000;
+setInterval(updatePrice, tenSeconds)

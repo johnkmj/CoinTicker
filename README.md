@@ -4,6 +4,12 @@
 
 ## Todolist/features
 
+###Current features
+
+Shows the current bitcoin price in the menubar. Different sources can be selected by clicking the menu item.
+
+###Future todo
+
 Icon that changes from bull to bear depending on the market outlook.
 Icon that has a appended value that shows the realtime value of the bitcoin price.
 Alerts.

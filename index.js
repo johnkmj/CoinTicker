@@ -3,15 +3,22 @@
 require('electron-debug')();
 var unirest = require('unirest')
 
-const {app, Tray, Menu} = require('electron')
+const {app, Tray, Menu, BrowserWindow, dialog} = require('electron')
 const path = require('path')
 const assetsDirectory = path.join(__dirname, 'assets')
 
 var priceSource = Menu.buildFromTemplate([
-  {label: 'Coinbase', type: 'radio', checked: true},
-  {label: 'Bitfinex', type: 'radio'},
-  {label: 'Blockchain', type: 'radio'},
-  {label: 'Created by John Koh :)'}
+  {label: 'Coinbase', type: 'radio', checked: true, click() { updatePrice() }},
+  {label: 'Bitfinex', type: 'radio', click() { updatePrice() }},
+  {label: 'Blockchain', type: 'radio', click() { updatePrice() }},
+  {label: 'About', click() {
+    dialog.showMessageBox({
+      title: 'About',
+      message: 'CoinTicker V1.0. Created by John Koh.',
+      detail: 'https://github.com/johnthedong/CoinTicker',
+      buttons: ["OK"] });
+  }},
+  {label: 'Quit', click() { app.quit() }}
 ]);
 
 let tray = undefined;
@@ -39,21 +46,20 @@ const setPrice = (url, parse_arr) => {
       tray.setTitle("Error")
     } else {
         var price = res.body;
+        // parser that takes in an array of parsing labels and parses them.
         for (var i=0; i < parse_arr.length; i++) {
           price = price[parse_arr[i]]
         }
-        tray.setTitle(price.toString());
+        tray.setTitle("$" + price.toString());
       }
     })
 }
 
 
 const updatePrice = () => {
-  // FIXME replace with your own API key
-  // Register for one at https://developer.forecast.io/register
-  // check which one is checked.
   console.log("Updating price...")
 
+  // checks which label is selected to determine the pricing source
   var tickerSource;
   for(var selected = 0; selected < 3; selected++) {
     if (priceSource.items[selected].checked) {
@@ -61,8 +67,9 @@ const updatePrice = () => {
       break;
     }
   }
+
   console.log(`Getting bitcoin price from ${tickerSource}`)
-  var price = "$100";
+  var price = "0";
   switch(tickerSource) {
     case "Coinbase":
       setPrice("https://api.coinbase.com/v2/prices/spot?currency=USD", ["data", "amount"]);

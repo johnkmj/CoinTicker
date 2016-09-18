@@ -83,5 +83,5 @@ const updatePrice = () => {
   }
 }
 
-const tenSeconds = 10 * 1000;
-setInterval(updatePrice, tenSeconds)
+const halfMin = 30 * 1000;
+setInterval(updatePrice, halfMin)

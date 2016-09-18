@@ -1,5 +1,7 @@
 # cointicker
 
+![Logo](http://i.imgur.com/cNKARiy.png)
+
 > A bitcoin ticker written in Electron.
 
 ## Todolist/features

@@ -21,7 +21,7 @@ var priceSource = Menu.buildFromTemplate([
   {label: 'Quit', click() { app.quit() }}
 ]);
 
-let tray = undefined;
+let tray;
 
 app.dock.hide()
 

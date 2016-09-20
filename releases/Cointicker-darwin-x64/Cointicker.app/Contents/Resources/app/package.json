@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "My funkadelic app",
   "license": "MIT",
-  "repository": "johnkmj/cointicker",
+  "repository": "johnthedong/cointicker",
   "author": {
     "name": "John Koh",
     "email": "me@johnkoh.net",
@@ -13,7 +13,7 @@
   "scripts": {
     "test": "xo",
     "start": "electron .",
-    "build": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./icon.icns --overwrite"
+    "build": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./icon.icns --overwrite --ignore=dist"
   },
   "files": [
     "index.js",

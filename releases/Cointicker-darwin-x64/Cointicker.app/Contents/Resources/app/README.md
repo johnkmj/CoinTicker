@@ -1,5 +1,9 @@
 # cointicker
 
+[![Code Climate](https://codeclimate.com/github/johnkmj/CoinTicker/badges/gpa.svg)](https://codeclimate.com/github/johnkmj/CoinTicker)
+
+![Logo](http://i.imgur.com/cNKARiy.png)
+
 > A bitcoin ticker written in Electron.
 
 ## Todolist/features

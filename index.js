@@ -1,11 +1,11 @@
 'use strict';
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-var unirest = require('unirest')
+var unirest = require('unirest');
 
-const {app, Tray, Menu, BrowserWindow, dialog} = require('electron')
-const path = require('path')
-const assetsDirectory = path.join(__dirname, 'assets')
+const {app, Tray, Menu, BrowserWindow, dialog} = require('electron');
+const path = require('path');
+const assetsDirectory = path.join(__dirname, 'assets');
 
 var priceSource = Menu.buildFromTemplate([
   {label: 'Coinbase', type: 'radio', checked: true, click() { updatePrice() }},

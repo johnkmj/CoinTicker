@@ -30,6 +30,7 @@ app.on('ready', () => {
   updatePrice();
 });
 
+
 const createTray = () => {
   console.log("Creating Tray Icon...")
   tray = new Tray(path.join(assetsDirectory, 'bitcoinTemplate.png'));

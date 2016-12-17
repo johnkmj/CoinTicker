@@ -1,15 +1,14 @@
 {
   "name": "cointicker",
   "productName": "Cointicker",
-  "version": "V1.01",
-  "description": "My funkadelic app",
+  "version": "1.0.2",
+  "description": "Menubar bitcoin ticker.",
   "license": "MIT",
-  "repository": "johnthedong/cointicker",
-  "author": {
-    "name": "John Koh",
-    "email": "me@johnkoh.net",
-    "url": "johnkoh.net"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnthedong/cointicker.git"
   },
+  "author": "John Koh <me@johnkoh.net> (johnkoh.net)",
   "scripts": {
     "test": "xo",
     "start": "electron .",
@@ -40,5 +39,10 @@
       "node",
       "browser"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/johnthedong/cointicker/issues"
+  },
+  "homepage": "https://github.com/johnthedong/cointicker#readme",
+  "main": "index.js"
 }
